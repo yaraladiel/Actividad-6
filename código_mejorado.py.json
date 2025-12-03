@@ -1,0 +1,151 @@
+import tkinter as tk
+
+class AppLogin:
+    USUARIO_VALIDO = "medebes"
+    PASSWORD_VALIDO = "5000"
+    
+    def __init__(self):
+        self.ventana =tk.Tk()
+        self.ventana.title("Sistema de Login")
+        self.ventana.geometry("450x350")
+        self.ventana.resizable(False, False)
+        self.ventana.configure(bg='#e6f2ff')
+        
+        self.configurar_grid()
+        self.crear_widgets()
+        self.ventana.bind('<Return>', lambda e: self.validar_credenciales())
+    
+    def configurar_grid(self):
+        self.ventana.grid_rowconfigure(0, weight=0)
+        self.ventana.grid_rowconfigure(1, weight=1)
+        self.ventana.grid_rowconfigure(2, weight=1)
+        self.ventana.grid_rowconfigure(3, weight=0)
+        self.ventana.grid_rowconfigure(4, weight=0)
+        self.ventana.grid_rowconfigure(5, weight=0)
+        
+        self.ventana.grid_columnconfigure(0, weight=1)
+        self.ventana.grid_columnconfigure(1, weight=2)
+    
+    def crear_widgets(self):
+        self.crear_titulo()
+        self.crear_campos_usuario()
+        self.crear_campos_password()
+        self.crear_boton()
+        self.crear_mensaje()
+        self.crear_pie_pagina()
+    
+    def crear_titulo(self):
+        tk.Label(
+            self.ventana, 
+            text="Iniciar Sesión",
+            font=("Times New Roman", 20, "bold"),
+            bg='#e6f2ff',
+            fg='#003366'
+        ).grid(row=0, column=0, columnspan=2, pady=30, sticky="ew")
+    
+    def crear_campos_usuario(self):
+        tk.Label(
+            self.ventana,
+            text="Usuario:",
+            font=("Times New Roman", 14),
+            bg='#e6f2ff',
+            fg='#003366'
+        ).grid(row=1, column=0, padx=20, pady=5, sticky="e")
+        
+        self.entry_usuario = tk.Entry(
+            self.ventana,
+            font=("Times New Roman", 12),
+            width=22,
+            bg='#ffffff',
+            fg='#003366',
+            relief='solid',
+            bd=1
+        )
+        self.entry_usuario.grid(row=1, column=1, padx=(0,40), pady=5, sticky="w")
+        self.entry_usuario.focus()
+    
+    def crear_campos_password(self):
+        tk.Label(
+            self.ventana,
+            text="Contraseña:",
+            font=("Times New Roman", 14),
+            bg='#e6f2ff',
+            fg='#003366'
+        ).grid(row=2, column=0, padx=20, pady=5, sticky="e")
+        
+        self.entry_password = tk.Entry(
+            self.ventana,
+            font=("Times New Roman", 12),
+            width=22,
+            show="*",
+            bg='#ffffff',
+            fg='#003366',
+            relief='solid',
+            bd=1
+        )
+        self.entry_password.grid(row=2, column=1, padx=(0,40), pady=5, sticky="w")
+    
+    def crear_boton(self):
+        tk.Button(
+            self.ventana,
+            text="INGRESAR",
+            font=("Times New Roman", 14, "bold"),
+            bg='#4CAF50',
+            fg='white',
+            command=self.validar_credenciales,
+            width=12,
+            height=1,
+            relief='raised',
+            bd=2
+        ).grid(row=3, column=0, columnspan=2, pady=25)
+    
+    def crear_mensaje(self):
+        self.etiqueta_mensaje = tk.Label(
+            self.ventana,
+            text="",
+            font=("Times New Roman", 12, "italic"),
+            bg='#e6f2ff',
+            fg='#003366'
+        )
+        self.etiqueta_mensaje.grid(row=4, column=0, columnspan=2, pady=10, sticky="ew")
+    
+    def crear_pie_pagina(self):
+        tk.Label(
+            self.ventana,
+            text="Sistema de Autenticación - Ingrese sus credenciales",
+            font=("Times New Roman", 10),
+            bg='#d4e6ff',
+            fg='#003366'
+        ).grid(
+            row=5, 
+            column=0, 
+            columnspan=2, 
+            sticky="ew", 
+            padx=20, 
+            pady=(10,15), 
+            ipady=5
+        )
+    
+    def validar_credenciales(self):
+        usuario = self.entry_usuario.get().strip()
+        password = self.entry_password.get()
+        
+        if usuario == self.USUARIO_VALIDO and password == self.PASSWORD_VALIDO:
+            self.mostrar_resultado("✓ Acceso concedido - Credenciales correctas", "#006400")
+        else:
+            self.mostrar_resultado("✗ Acceso denegado - Usuario o contraseña incorrectos", "#8B0000")
+    
+    def mostrar_resultado(self, mensaje, color):
+        self.etiqueta_mensaje.config(text=mensaje, fg=color)
+        
+        if color == "#8B0000":
+            self.entry_password.delete(0, tk.END)
+            self.entry_usuario.focus()
+    
+    def ejecutar(self):
+        self.ventana.mainloop()
+
+if __name__ == "__main__":
+    app = AppLogin()
+    app.ejecutar()
+    
